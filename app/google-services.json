@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "731763271387",
+    "project_id": "aartisangrah-ee3b7",
+    "storage_bucket": "aartisangrah-ee3b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731763271387:android:fa33216792fe4a7daa0efe",
+        "android_client_info": {
+          "package_name": "com.example.aarti_sangrah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731763271387-i666op7ortrmsm8p6ih48fn5om0drsh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ8zdUkWpXj_q4wET0Gl9E64ahKZbq4nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731763271387-i666op7ortrmsm8p6ih48fn5om0drsh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
