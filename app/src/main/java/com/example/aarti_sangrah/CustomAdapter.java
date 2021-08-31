@@ -3,9 +3,12 @@ package com.example.aarti_sangrah;
 
 import android.content.Context;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,40 +18,86 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> implements Filterable {
 
     Context mContext;
-    private ArrayList<String> mHindiNames = new ArrayList<>();
+//    private ArrayList<String> mHindiNames = new ArrayList<>();
     private ArrayList<String> mEnglishNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
 
-    public CustomAdapter(Context mContext,ArrayList<String> mHindiNames, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls) {
+    private ArrayList<String> mImageUrls = new ArrayList<>();
+    List<String> englishSongListAll = new ArrayList<>();
+
+
+
+    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls) {
         this.mContext = mContext;
-        this.mHindiNames = mHindiNames;
+//        this.mHindiNames = mHindiNames;
         this.mEnglishNames = mEnglishNames;
+
         this.mImageUrls = mImageUrls;
+        this.englishSongListAll = new ArrayList<>(mEnglishNames);
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter = new Filter() {
+        //run on background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<String> filteredList = new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                filteredList.addAll(englishSongListAll);
+            }
+            else{
+                for(String songName : englishSongListAll){
+                    if(songName.toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filteredList.add(songName);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+
+
+            return filterResults;
+        }
+        //run on ui thread
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            mEnglishNames.clear();
+            mEnglishNames.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mHindiName,mEnglishName;
+        TextView mEnglishName;
         ImageView mThumbnail;
 
         //        private final Button button;
         public ViewHolder(View view) {
             super(view);
-            mHindiName = view.findViewById(R.id.hindi_name);
+//            mHindiName = view.findViewById(R.id.hindi_name);
             mEnglishName = view.findViewById(R.id.english_name);
+            mEnglishName.setMovementMethod(new ScrollingMovementMethod());
             mThumbnail = view.findViewById(R.id.aarti_image_view);
             // Define click listener for the ViewHolder's View
 
         }
 
-        public TextView getHindiTextView() {
-            return mHindiName;
-        }
+//        public TextView getHindiTextView() {
+//            return mHindiName;
+//        }
         public TextView getEnglishTextView() {
             return mEnglishName;
         }
@@ -80,8 +129,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getHindiTextView().setText(mHindiNames.get(position));
+//        viewHolder.getHindiTextView().setText(mHindiNames.get(position));
         viewHolder.getEnglishTextView().setText(mEnglishNames.get(position));
+
         Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());
 
     }
@@ -89,6 +139,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mHindiNames.size();
+        return mEnglishNames.size();
     }
 }
