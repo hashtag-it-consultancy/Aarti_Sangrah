@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 //    ArrayList<String> mHindiNames = new ArrayList<>();
     ArrayList<String> mEnglishNames = new ArrayList<>();
     ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<String> mBackgroundUrls = new ArrayList<>();
     DatabaseReference databaseReference;
     FirebaseDatabase database;
     CustomAdapter mAdapter;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("English NAMES",ds.child("english_name").getValue().toString());
                     mEnglishNames.add(ds.child("english_name").getValue().toString());
                     mImageUrls.add(ds.child("image_url").getValue().toString());
+                    mBackgroundUrls.add(ds.child("bg_image").getValue().toString());
                 }
 //                Log.d("English NAMES",mEnglishNames.toString());
                 setRecyclerView();
@@ -60,10 +62,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        for(int i = 0; i<15; i++){
-//            mHindiNames.add("hindi name" + String.valueOf(i));
-//            mEnglishNames.add("english name" + String.valueOf(i));
-//        }
         mCardView = findViewById(R.id.displayCard);
         mCardView.setBackgroundResource(R.drawable.recycler_view_bg);
 
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView = findViewById(R.id.audioRecyclerView);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls);
+        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls,mBackgroundUrls);
         mRecyclerView.setAdapter(mAdapter);
     }
 

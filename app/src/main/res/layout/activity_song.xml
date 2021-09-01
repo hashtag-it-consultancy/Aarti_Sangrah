@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SongActivity">
+
+    <ImageView
+        android:id="@+id/song_bg_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_aarti_app" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/song_lyrics_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/lyrics"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        android:onClick="lyricsPressed"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/song_play_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        android:onClick="play_btn"/>
+
+    <ImageView
+        android:id="@+id/song_bell_btn1"
+        android:src="@drawable/bell"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        android:onClick="bellPressed1"/>
+
+    <ImageView
+        android:id="@+id/song_bell_btn2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/bell"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        android:onClick="bellPressed2"/>
+
+    <ImageView
+        android:id="@+id/song_shankh_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="-11dp"
+        android:src="@drawable/shankh"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/guideline14"
+        app:layout_constraintVertical_bias="0.52"
+        android:onClick="shankhPressed"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/song_replay_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/count"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        android:onClick="replayPressed"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

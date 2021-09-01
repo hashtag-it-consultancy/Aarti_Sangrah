@@ -3,6 +3,7 @@ package com.example.aarti_sangrah;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +30,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private ArrayList<String> mEnglishNames = new ArrayList<>();
 
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mBackgroundUrls = new ArrayList<>();
     List<String> englishSongListAll = new ArrayList<>();
 
 
 
-    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls) {
+    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls, ArrayList<String> mBackgroundURLs) {
         this.mContext = mContext;
-//        this.mHindiNames = mHindiNames;
         this.mEnglishNames = mEnglishNames;
-
+        this.mBackgroundUrls = mBackgroundURLs;
         this.mImageUrls = mImageUrls;
         this.englishSongListAll = new ArrayList<>(mEnglishNames);
     }
@@ -92,6 +93,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             mEnglishName.setMovementMethod(new ScrollingMovementMethod());
             mThumbnail = view.findViewById(R.id.aarti_image_view);
             // Define click listener for the ViewHolder's View
+//            view.setOnClickListener(new View.OnClickListener() {
+//                public Context mContext;
+//
+//                @Override
+//                public void onClick(View v) {
+//                    mContext.startActivity(new Intent(mContext,SongActivity.class));
+//                }
+//            });
 
         }
 
@@ -133,7 +142,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.getEnglishTextView().setText(mEnglishNames.get(position));
 
         Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());
-
+        viewHolder.getEnglishTextView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,SongActivity.class);
+                intent.putExtra("bg_image",mBackgroundUrls.get(position));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        });
+//
     }
 
 
