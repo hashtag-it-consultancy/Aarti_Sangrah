@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 public class SongActivity extends AppCompatActivity {
     ImageView bellImageView1,bellImageView2,mBackgroundImageView;
-    String mBackgroundURL;
+    String mBackgroundURL,filename,fileURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,10 @@ public class SongActivity extends AppCompatActivity {
         mBackgroundImageView = findViewById(R.id.song_bg_imageView);
         Intent intent = getIntent();
         mBackgroundURL = intent.getStringExtra("bg_image");
+        filename = intent.getStringExtra("filename");
+        fileURL = intent.getStringExtra("fileURL");
+        Log.d("filename SongActivity",filename);
+        Log.d("fileURL SongActivity",fileURL);
         Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
 
     }
@@ -59,6 +64,10 @@ public class SongActivity extends AppCompatActivity {
         ImageView lyricsBtn = findViewById(R.id.song_lyrics_btn);
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         lyricsBtn.startAnimation(myAnim);
+        Intent intent = new Intent(SongActivity.this,LyricsActivity.class);
+        intent.putExtra("filename",filename);
+        intent.putExtra("fileURL",fileURL);
+        startActivity(intent);
     }
 
     public void shankhPressed(View view) {

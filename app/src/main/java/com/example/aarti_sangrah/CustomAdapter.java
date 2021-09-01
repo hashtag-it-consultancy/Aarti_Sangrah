@@ -31,16 +31,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<String> mBackgroundUrls = new ArrayList<>();
+    private ArrayList<String> filename = new ArrayList<>();
+    private ArrayList<String> fileURL = new ArrayList<>();
     List<String> englishSongListAll = new ArrayList<>();
 
 
 
-    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls, ArrayList<String> mBackgroundURLs) {
+    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls, ArrayList<String> mBackgroundURLs, ArrayList<String> filename,ArrayList<String> fileURL) {
         this.mContext = mContext;
         this.mEnglishNames = mEnglishNames;
         this.mBackgroundUrls = mBackgroundURLs;
         this.mImageUrls = mImageUrls;
         this.englishSongListAll = new ArrayList<>(mEnglishNames);
+        this.filename = filename;
+        this.fileURL = fileURL;
     }
 
     @Override
@@ -147,6 +151,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(mContext,SongActivity.class);
                 intent.putExtra("bg_image",mBackgroundUrls.get(position));
+                intent.putExtra("filename",filename.get(position));
+                intent.putExtra("fileURL",fileURL.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

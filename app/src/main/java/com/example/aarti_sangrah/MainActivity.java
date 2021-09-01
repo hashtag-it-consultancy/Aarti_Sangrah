@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> mEnglishNames = new ArrayList<>();
     ArrayList<String> mImageUrls = new ArrayList<>();
     ArrayList<String> mBackgroundUrls = new ArrayList<>();
+    ArrayList<String> filename = new ArrayList<>();
+    ArrayList<String> fileURL = new ArrayList<>();
     DatabaseReference databaseReference;
     FirebaseDatabase database;
     CustomAdapter mAdapter;
@@ -41,17 +43,17 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                mHindiNames.clear();
+                filename.clear();
+                fileURL.clear();
                 mEnglishNames.clear();
                 mImageUrls.clear();
                 for(DataSnapshot ds : snapshot.getChildren()){
-//                    mHindiNames.add(ds.child("hindi_name").getValue().toString());
-                    Log.d("English NAMES",ds.child("english_name").getValue().toString());
                     mEnglishNames.add(ds.child("english_name").getValue().toString());
                     mImageUrls.add(ds.child("image_url").getValue().toString());
                     mBackgroundUrls.add(ds.child("bg_image").getValue().toString());
+                    filename.add(ds.child("filename").getValue().toString());
+                    fileURL.add(ds.child("fileURL").getValue().toString());
                 }
-//                Log.d("English NAMES",mEnglishNames.toString());
                 setRecyclerView();
             }
 
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView = findViewById(R.id.audioRecyclerView);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls,mBackgroundUrls);
+        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls,mBackgroundUrls,filename,fileURL);
         mRecyclerView.setAdapter(mAdapter);
     }
 
