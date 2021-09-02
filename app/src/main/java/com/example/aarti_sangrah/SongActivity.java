@@ -152,6 +152,12 @@ public class SongActivity extends AppCompatActivity {
 //    *************** EXO PLAYER******************************************************
 
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(serviceIntent);
+        active = 0;
+//        Toast.makeText(getApplicationContext(),"16. onDestroy()", Toast.LENGTH_SHORT).show();
+    }
 
 }
