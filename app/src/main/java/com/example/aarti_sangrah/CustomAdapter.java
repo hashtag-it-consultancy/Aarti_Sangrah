@@ -33,11 +33,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private ArrayList<String> mBackgroundUrls = new ArrayList<>();
     private ArrayList<String> filename = new ArrayList<>();
     private ArrayList<String> fileURL = new ArrayList<>();
+    private ArrayList<String> songURL = new ArrayList<>();
     List<String> englishSongListAll = new ArrayList<>();
 
 
 
-    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls, ArrayList<String> mBackgroundURLs, ArrayList<String> filename,ArrayList<String> fileURL) {
+    public CustomAdapter(Context mContext, ArrayList<String> mEnglishNames, ArrayList<String> mImageUrls, ArrayList<String> mBackgroundURLs, ArrayList<String> filename,ArrayList<String> fileURL,ArrayList<String> songURL) {
         this.mContext = mContext;
         this.mEnglishNames = mEnglishNames;
         this.mBackgroundUrls = mBackgroundURLs;
@@ -45,6 +46,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         this.englishSongListAll = new ArrayList<>(mEnglishNames);
         this.filename = filename;
         this.fileURL = fileURL;
+        this.songURL = songURL;
     }
 
     @Override
@@ -153,6 +155,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 intent.putExtra("bg_image",mBackgroundUrls.get(position));
                 intent.putExtra("filename",filename.get(position));
                 intent.putExtra("fileURL",fileURL.get(position));
+                intent.putExtra("songURL",songURL.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

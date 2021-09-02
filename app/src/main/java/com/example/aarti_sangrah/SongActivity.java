@@ -40,10 +40,11 @@ public class SongActivity extends AppCompatActivity {
 //    SimpleExoPlayer simpleExoPlayer;
      Intent serviceIntent;
     boolean isPlaying;
-    ImageView bellImageView1,bellImageView2,mBackgroundImageView;
-    String mBackgroundURL,filename,fileURL;
+    ImageView bellImageView1,bellImageView2,mBackgroundImageView,playBtn;
+    String mBackgroundURL,filename,fileURL,songURL;
     int active = 0;
     MyService myService;
+
 
     public ServiceConnection myConnection;
 
@@ -51,8 +52,8 @@ public class SongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
-        serviceIntent = new Intent(getApplicationContext(),MyService.class);
 
+        playBtn = findViewById(R.id.song_play_btn);
 
 
         isPlaying = false;
@@ -61,11 +62,15 @@ public class SongActivity extends AppCompatActivity {
         mBackgroundURL = intent.getStringExtra("bg_image");
         filename = intent.getStringExtra("filename");
         fileURL = intent.getStringExtra("fileURL");
+        songURL = intent.getStringExtra("songURL");
+        serviceIntent = new Intent(getApplicationContext(),MyService.class);
+        serviceIntent.putExtra("songURL",songURL);
         Log.d("filename SongActivity",filename);
         Log.d("fileURL SongActivity",fileURL);
+        Log.d("songURL SongActivity",songURL);
         Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
 
-        serviceIntent = new Intent(getApplicationContext(),MyService.class);
+//        serviceIntent = new Intent(getApplicationContext(),MyService.class);
 
     }
 //    ******************************************************************************
@@ -91,39 +96,18 @@ public class SongActivity extends AppCompatActivity {
     }
 
     public void play_btn(View view) throws IOException {
-        ImageView playBtn = findViewById(R.id.song_play_btn);
+
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
         if(active == 0){
             startService(serviceIntent);
 
-             myConnection = new ServiceConnection() {
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-//                    Toast.makeText(Api.Client.this, "Service is disconnected", 1000).show();
-//                    mBounded = false;
-//                    mServer = null;
-                    Log.d("Service","Disconnected");
-                }
-
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-//                    Toast.makeText(Client.this, "Service is connected", 1000).show();
-//                    mBounded = true;
-                    Log.d("Service","Connected");
-                    MyService.LocalBinder mLocalBinder = (MyService.LocalBinder)service;
-                    myService = mLocalBinder.getService();
-                }
-             };
-
-            bindService(serviceIntent, myConnection, BIND_AUTO_CREATE);
 
             playBtn.setImageResource(R.drawable.ic_pause);
             active = 1;
         }else{
-//            stopService(serviceIntent);
+            stopService(serviceIntent);
 
-            myService.onPause();
             playBtn.setImageResource(R.drawable.ic_play);
             active = 0;
         }
@@ -139,8 +123,10 @@ public class SongActivity extends AppCompatActivity {
         ImageView replayBtn = findViewById(R.id.song_replay_btn);
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         replayBtn.startAnimation(myAnim);
-        stopService(new Intent(getApplicationContext(),MyService.class));
-        startService(new Intent(getApplicationContext(),MyService.class));
+        stopService(serviceIntent);
+        startService(serviceIntent);
+        playBtn.setImageResource(R.drawable.ic_pause);
+        active = 1;
 
 
     }
@@ -160,6 +146,7 @@ public class SongActivity extends AppCompatActivity {
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         shankhBtn.startAnimation(myAnim);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.shankh);
+//        mp.stop();
         mp.start();
     }
 //    *************** EXO PLAYER******************************************************
