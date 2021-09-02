@@ -20,7 +20,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LyricsActivity extends AppCompatActivity {
-    String path = "/storage/self/primary/Android/data/com.example.aarti_sangrah/files/";
+//    String path = "/storage/self/primary/Android/data/com.example.aarti_sangrah/files/";
+    String path ;
     TextView subtitletv;
     String filename,fileURL;
     StorageReference mref;
@@ -30,7 +31,7 @@ public class LyricsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lyrics);
-
+        path = getFilesDir().getAbsolutePath();
         Intent intent = getIntent();
         filename = intent.getStringExtra("filename");
         fileURL = intent.getStringExtra("fileURL");
@@ -97,8 +98,11 @@ public class LyricsActivity extends AppCompatActivity {
         Log.d("LyricsActivity","in:writeToFile");
         try
         {
+            File mFile = new File(path);
             File file = new File(path+filename);
+
             if (!file.exists()) {
+                mFile.mkdirs();
                 file.createNewFile();
             }
             FileOutputStream stream = new FileOutputStream(path+filename);
