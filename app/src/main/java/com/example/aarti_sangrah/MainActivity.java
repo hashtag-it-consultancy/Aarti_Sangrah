@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> mBackgroundUrls = new ArrayList<>();
     ArrayList<String> filename = new ArrayList<>();
     ArrayList<String> fileURL = new ArrayList<>();
+    ArrayList<String> songURL = new ArrayList<>();
+
     DatabaseReference databaseReference;
     FirebaseDatabase database;
     CustomAdapter mAdapter;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     mBackgroundUrls.add(ds.child("bg_image").getValue().toString());
                     filename.add(ds.child("filename").getValue().toString());
                     fileURL.add(ds.child("fileURL").getValue().toString());
+                    songURL.add(ds.child("song_url").getValue().toString());
                 }
                 setRecyclerView();
             }
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView = findViewById(R.id.audioRecyclerView);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls,mBackgroundUrls,filename,fileURL);
+        mAdapter = new CustomAdapter(getApplicationContext(),mEnglishNames,mImageUrls,mBackgroundUrls,filename,fileURL,songURL);
         mRecyclerView.setAdapter(mAdapter);
     }
 
