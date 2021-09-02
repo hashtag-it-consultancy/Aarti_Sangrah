@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -18,13 +18,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class LyricsActivity extends AppCompatActivity {
     String path = "/storage/self/primary/Android/data/com.example.aarti_sangrah/files/";
     TextView subtitletv;
     String filename,fileURL;
     StorageReference mref;
+//    File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,42 +43,70 @@ public class LyricsActivity extends AppCompatActivity {
         subtitletv = (TextView)findViewById(R.id.lyrics_txtView);
         if(file.exists()){
             Log.d("Inside If","Lyrics Activity");
+            setLyrics(file);
+        }
+        else{
+            Toast.makeText(LyricsActivity.this,"Downloading please wait.",Toast.LENGTH_SHORT).show();
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference()
+                    .child("lyrics")
+                    .child(filename);
+
+            storageRef.getBytes(1024*1024)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        //gs://aartisangrah-ee3b7.appspot.com/lyrics/sukhkarta_dukhharta.txt
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Log.d("LyricsActivity","in:onSuccess");
+                            try {
+                                writeToFile(bytes);
+                            } catch (IOException e) {
+                                Log.d("LyricsActivity","in:onSuccess:catch");
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+        }
+
+    }
+
+    private void setLyrics(File file) {
+        try {
+            Log.d("Inside try","Lyrics Activity");
+            FileReader fr=new FileReader(file);
+            BufferedReader br=new BufferedReader(fr);
+            String line = null;
             try {
-                Log.d("Inside try","Lyrics Activity");
-                FileReader fr=new FileReader(file);
-                BufferedReader br=new BufferedReader(fr);
-                String line = null;
-                try {
-                    while((line = br.readLine()) != null)
-                    {
-                        subtitletv.append(line);
-                        subtitletv.append("\n");
-                    }
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                while((line = br.readLine()) != null)
+                {
+                    subtitletv.append(line);
+                    subtitletv.append("\n");
                 }
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        else{
-            Toast.makeText(LyricsActivity.this,"No Lyrics File",Toast.LENGTH_SHORT).show();
-            mref = FirebaseStorage.getInstance().getReference();
-            StorageReference filepath = mref.child("lyrics").child(filename);
-            InputStream inputStream = null;
-            File file1 = null;
-            FileOutputStream fileOutputStream = null;
-            String state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state)) {
-                try {
-                    file1 = new File(path + filename);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    }
 
+    public void writeToFile(byte[] array) throws IOException {
+        Log.d("LyricsActivity","in:writeToFile");
+        try
+        {
+            File file = new File(path+filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream stream = new FileOutputStream(path+filename);
+            stream.write(array);
+            setLyrics(file);
+        } catch (FileNotFoundException e1)
+        {
+            e1.printStackTrace();
+        }
     }
 }
