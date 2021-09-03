@@ -1,14 +1,19 @@
 package com.example.aarti_sangrah;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -44,6 +49,9 @@ public class SongActivity extends AppCompatActivity {
     String mBackgroundURL,filename,fileURL,songURL;
     int active = 0;
     MyService myService;
+    private Boolean access = false;
+    int requestCode = 1;
+
 
 
     public ServiceConnection myConnection;
@@ -69,6 +77,21 @@ public class SongActivity extends AppCompatActivity {
         Log.d("fileURL SongActivity",fileURL);
         Log.d("songURL SongActivity",songURL);
         Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                access = true;
+            } else{
+                access = false;
+                // Request Runtime Permissions
+                ActivityCompat.requestPermissions(SongActivity.this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, requestCode);
+//                    granted = 1;
+                //////Toast.makeText(context, "Cannot Download, Please Grant Storage Permission!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            access = true;
+        }
 
 //        serviceIntent = new Intent(getApplicationContext(),MyService.class);
 
@@ -132,13 +155,29 @@ public class SongActivity extends AppCompatActivity {
     }
 
     public void lyricsPressed(View view) {
+
+
+
+
         ImageView lyricsBtn = findViewById(R.id.song_lyrics_btn);
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         lyricsBtn.startAnimation(myAnim);
-        Intent intent = new Intent(SongActivity.this,LyricsActivity.class);
-        intent.putExtra("filename",filename);
-        intent.putExtra("fileURL",fileURL);
+
+        Intent intent = new Intent(SongActivity.this, LyricsActivity.class);
+
+        intent.putExtra("filename", filename);
+        intent.putExtra("fileURL", fileURL);
         startActivity(intent);
+
+
+//        ImageView lyricsBtn = findViewById(R.id.song_lyrics_btn);
+//        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+//        lyricsBtn.startAnimation(myAnim);
+//        Intent intent = new Intent(SongActivity.this,LyricsActivity.class);
+//        intent.putExtra("filename",filename);
+//        intent.putExtra("fileURL",fileURL);
+//        startActivity(intent);
+
     }
 
     public void shankhPressed(View view) {
