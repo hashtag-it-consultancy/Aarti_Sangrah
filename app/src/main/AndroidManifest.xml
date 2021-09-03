@@ -16,6 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight">
+
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="ca-app-pub-3940256099942544/6300978111" />-->
+
+                <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+
+
         <activity android:name=".LyricsActivity"></activity>
         <activity android:name=".SongActivity" />
         <activity
@@ -26,8 +34,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
 
-        <service android:name=".MyService"/>    </application>
+        <service android:name=".MyService"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6518391481638658~3542010485"/>
+    </application>
 
 </manifest>

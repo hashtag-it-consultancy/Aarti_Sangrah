@@ -12,13 +12,24 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="99dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-6518391481638658/3649821698">
+
+            </com.google.android.gms.ads.AdView>
 
             <TextView
                 android:id="@+id/lyrics_txtView"
@@ -27,6 +38,10 @@
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+
         </LinearLayout>
+
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

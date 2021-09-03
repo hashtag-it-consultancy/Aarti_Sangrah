@@ -51,5 +51,9 @@ dependencies {
     //Exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.10.1'
 
+    //Google ads
+    implementation 'com.google.android.gms:play-services-ads:20.3.0'
+
+
 
 }

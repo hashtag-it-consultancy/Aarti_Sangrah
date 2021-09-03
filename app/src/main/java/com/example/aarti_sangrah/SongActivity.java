@@ -1,5 +1,6 @@
 package com.example.aarti_sangrah;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,10 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.common.api.Api;
 
 import java.io.IOException;
@@ -49,6 +55,7 @@ public class SongActivity extends AppCompatActivity {
     String mBackgroundURL,filename,fileURL,songURL;
     int active = 0;
     MyService myService;
+    private InterstitialAd mInterstitialAd;
     private Boolean access = false;
     int requestCode = 1;
 
@@ -63,6 +70,36 @@ public class SongActivity extends AppCompatActivity {
 
         playBtn = findViewById(R.id.song_play_btn);
 
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this,"ca-app-pub-6518391481638658/9357443940", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(SongActivity.this);
+
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                }
+            }
+        },4000);
 
         isPlaying = false;
         mBackgroundImageView = findViewById(R.id.song_bg_imageView);
@@ -92,6 +129,8 @@ public class SongActivity extends AppCompatActivity {
         else {
             access = true;
         }
+
+
 
 //        serviceIntent = new Intent(getApplicationContext(),MyService.class);
 
