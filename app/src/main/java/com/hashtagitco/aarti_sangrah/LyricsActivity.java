@@ -1,4 +1,4 @@
-package com.example.aarti_sangrah;
+package com.hashtagitco.aarti_sangrah;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hashtagitco.aarti_sangrah.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;

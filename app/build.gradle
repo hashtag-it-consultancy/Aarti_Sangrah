@@ -7,7 +7,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.aarti_sangrah"
+        applicationId "com.hashtagitco.aarti_sangrah"
         minSdk 22
         targetSdk 30
         versionCode 1

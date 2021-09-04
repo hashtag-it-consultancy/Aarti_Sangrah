@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SongActivity">
+    tools:context="com.hashtagitco.aarti_sangrah.SongActivity">
 
     <ImageView
         android:id="@+id/song_bg_imageView"

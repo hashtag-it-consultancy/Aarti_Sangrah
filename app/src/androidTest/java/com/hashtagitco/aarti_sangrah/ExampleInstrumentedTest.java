@@ -1,4 +1,4 @@
-package com.example.aarti_sangrah;
+package com.hashtagitco.aarti_sangrah;
 
 import android.content.Context;
 

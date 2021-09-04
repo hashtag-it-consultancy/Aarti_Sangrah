@@ -1,4 +1,4 @@
-package com.example.aarti_sangrah;
+package com.hashtagitco.aarti_sangrah;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 

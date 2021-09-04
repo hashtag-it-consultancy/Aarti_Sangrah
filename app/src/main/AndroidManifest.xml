@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aarti_sangrah">
+    package="com.hashtagitco.aarti_sangrah">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -24,10 +24,10 @@
                 <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
 
 
-        <activity android:name=".LyricsActivity"></activity>
-        <activity android:name=".SongActivity" />
+        <activity android:name="com.hashtagitco.aarti_sangrah.LyricsActivity"></activity>
+        <activity android:name="com.hashtagitco.aarti_sangrah.SongActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.hashtagitco.aarti_sangrah.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
 
         </activity>
 
-        <service android:name=".MyService"/>
+        <service android:name="com.hashtagitco.aarti_sangrah.MyService"/>
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true"/>

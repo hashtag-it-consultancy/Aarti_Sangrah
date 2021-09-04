@@ -1,4 +1,4 @@
-package com.example.aarti_sangrah;
+package com.hashtagitco.aarti_sangrah;
 
 
 import android.content.Context;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hashtagitco.aarti_sangrah.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

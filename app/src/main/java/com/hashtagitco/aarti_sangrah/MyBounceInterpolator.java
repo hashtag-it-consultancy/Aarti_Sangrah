@@ -1,4 +1,4 @@
-package com.example.aarti_sangrah;
+package com.hashtagitco.aarti_sangrah;
 
 class MyBounceInterpolator implements android.view.animation.Interpolator {
     private double mAmplitude = 1;
