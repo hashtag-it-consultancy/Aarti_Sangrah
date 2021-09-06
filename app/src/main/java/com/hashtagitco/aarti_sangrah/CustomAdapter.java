@@ -27,7 +27,7 @@ import java.util.List;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> implements Filterable {
 
     Context mContext;
-//    private ArrayList<String> mHindiNames = new ArrayList<>();
+
     private ArrayList<String> mEnglishNames = new ArrayList<>();
 
     private ArrayList<String> mImageUrls = new ArrayList<>();

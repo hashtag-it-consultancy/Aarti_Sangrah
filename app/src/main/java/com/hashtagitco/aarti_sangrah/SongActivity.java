@@ -18,7 +18,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hashtagitco.aarti_sangrah.R;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +31,9 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SongActivity extends AppCompatActivity {
@@ -42,6 +49,7 @@ public class SongActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private Boolean access = false;
     int requestCode = 1;
+    String path;
 
 
 
@@ -53,6 +61,21 @@ public class SongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_song);
 
         playBtn = findViewById(R.id.song_play_btn);
+
+
+        isPlaying = false;
+        mBackgroundImageView = findViewById(R.id.song_bg_imageView);
+        Intent intent = getIntent();
+        mBackgroundURL = intent.getStringExtra("bg_image");
+        filename = intent.getStringExtra("filename");
+        fileURL = intent.getStringExtra("fileURL");
+        songURL = intent.getStringExtra("songURL");
+        serviceIntent = new Intent(getApplicationContext(),MyService.class);
+        serviceIntent.putExtra("songURL",songURL);
+        Log.d("filename SongActivity",filename);
+        Log.d("fileURL SongActivity",fileURL);
+        Log.d("songURL SongActivity",songURL);
+        Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
 
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(this,"ca-app-pub-6518391481638658/9357443940", adRequest,
@@ -83,21 +106,7 @@ public class SongActivity extends AppCompatActivity {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 }
             }
-        },4000);
-
-        isPlaying = false;
-        mBackgroundImageView = findViewById(R.id.song_bg_imageView);
-        Intent intent = getIntent();
-        mBackgroundURL = intent.getStringExtra("bg_image");
-        filename = intent.getStringExtra("filename");
-        fileURL = intent.getStringExtra("fileURL");
-        songURL = intent.getStringExtra("songURL");
-        serviceIntent = new Intent(getApplicationContext(),MyService.class);
-        serviceIntent.putExtra("songURL",songURL);
-        Log.d("filename SongActivity",filename);
-        Log.d("fileURL SongActivity",fileURL);
-        Log.d("songURL SongActivity",songURL);
-        Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
+        },2000);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -107,22 +116,47 @@ public class SongActivity extends AppCompatActivity {
                 // Request Runtime Permissions
                 ActivityCompat.requestPermissions(SongActivity.this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, requestCode);
 //                    granted = 1;
-                //////Toast.makeText(context, "Cannot Download, Please Grant Storage Permission!", Toast.LENGTH_SHORT).show();
+
             }
         }
         else {
             access = true;
         }
 
+        path = getFilesDir().getAbsolutePath();
+        File file = new File(path + filename);
 
 
-//        serviceIntent = new Intent(getApplicationContext(),MyService.class);
+        if(file.exists()){
+            Log.d("Inside If","Lyrics Activity");
+
+        }
+        else{
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference()
+                    .child("lyrics")
+                    .child(filename);
+
+            storageRef.getBytes(1024*1024)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        //gs://aartisangrah-ee3b7.appspot.com/lyrics/sukhkarta_dukhharta.txt
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Log.d("LyricsActivity","in:onSuccess");
+                            try {
+                                writeToFile(bytes);
+                            } catch (IOException e) {
+                                Log.d("LyricsActivity","in:onSuccess:catch");
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+        }
+
+
 
     }
-//    ******************************************************************************
-
-//    ******************************************************************************
-
 
 
     public void bellPressed1(View view) {
@@ -158,9 +192,6 @@ public class SongActivity extends AppCompatActivity {
             active = 0;
         }
 
-        // Use bounce interpolator with amplitude 0.2 and frequency 20
-//        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 10);
-//        myAnim.setInterpolator(interpolator);
 
         playBtn.startAnimation(myAnim);
     };
@@ -193,14 +224,27 @@ public class SongActivity extends AppCompatActivity {
         startActivity(intent);
 
 
-//        ImageView lyricsBtn = findViewById(R.id.song_lyrics_btn);
-//        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-//        lyricsBtn.startAnimation(myAnim);
-//        Intent intent = new Intent(SongActivity.this,LyricsActivity.class);
-//        intent.putExtra("filename",filename);
-//        intent.putExtra("fileURL",fileURL);
-//        startActivity(intent);
 
+
+    }
+
+    public void writeToFile(byte[] array) throws IOException {
+        Log.d("LyricsActivity","in:writeToFile");
+        try
+        {
+            File mFile = new File(path);
+            File file = new File(path+filename);
+
+            if (!file.exists()) {
+                mFile.mkdirs();
+                file.createNewFile();
+            }
+            FileOutputStream stream = new FileOutputStream(path+filename);
+            stream.write(array);
+        } catch (FileNotFoundException e1)
+        {
+            e1.printStackTrace();
+        }
     }
 
     public void shankhPressed(View view) {

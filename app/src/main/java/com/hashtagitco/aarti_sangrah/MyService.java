@@ -40,7 +40,6 @@ public class MyService extends Service {
     }
 
     public void onStart(Intent intent, int startid){
-//        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
         URL = intent.getStringExtra("songURL");
         mMediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(URL));
         mMediaPlayer.setLooping(false);
@@ -49,7 +48,6 @@ public class MyService extends Service {
     }
 
     public void onDestroy(){
-//        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
         mMediaPlayer.stop();
     }
 

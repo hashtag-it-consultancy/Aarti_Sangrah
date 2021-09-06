@@ -63,29 +63,6 @@ public class LyricsActivity extends AppCompatActivity {
             Log.d("Inside If","Lyrics Activity");
             setLyrics(file);
         }
-        else{
-            Toast.makeText(LyricsActivity.this,"Downloading please wait.",Toast.LENGTH_SHORT).show();
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference()
-                    .child("lyrics")
-                    .child(filename);
-
-            storageRef.getBytes(1024*1024)
-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        //gs://aartisangrah-ee3b7.appspot.com/lyrics/sukhkarta_dukhharta.txt
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Log.d("LyricsActivity","in:onSuccess");
-                            try {
-                                writeToFile(bytes);
-                            } catch (IOException e) {
-                                Log.d("LyricsActivity","in:onSuccess:catch");
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-        }
 
     }
 
