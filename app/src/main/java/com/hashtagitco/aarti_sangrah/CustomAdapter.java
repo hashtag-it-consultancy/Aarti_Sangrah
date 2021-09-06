@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hashtagitco.aarti_sangrah.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -148,7 +149,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 //        viewHolder.getHindiTextView().setText(mHindiNames.get(position));
         viewHolder.getEnglishTextView().setText(mEnglishNames.get(position));
 
-        Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());
+//        Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());
+        Picasso.get().load(mImageUrls.get(position)).into(viewHolder.getImageView());
         viewHolder.getEnglishTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

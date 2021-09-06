@@ -30,6 +30,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,23 +61,6 @@ public class SongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
 
-        playBtn = findViewById(R.id.song_play_btn);
-
-
-        isPlaying = false;
-        mBackgroundImageView = findViewById(R.id.song_bg_imageView);
-        Intent intent = getIntent();
-        mBackgroundURL = intent.getStringExtra("bg_image");
-        filename = intent.getStringExtra("filename");
-        fileURL = intent.getStringExtra("fileURL");
-        songURL = intent.getStringExtra("songURL");
-        serviceIntent = new Intent(getApplicationContext(),MyService.class);
-        serviceIntent.putExtra("songURL",songURL);
-        Log.d("filename SongActivity",filename);
-        Log.d("fileURL SongActivity",fileURL);
-        Log.d("songURL SongActivity",songURL);
-        Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
-
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(this,"ca-app-pub-6518391481638658/9357443940", adRequest,
                 new InterstitialAdLoadCallback() {
@@ -106,9 +90,30 @@ public class SongActivity extends AppCompatActivity {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 }
             }
-        },2000);
+        },1000);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+        playBtn = findViewById(R.id.song_play_btn);
+
+
+        isPlaying = false;
+        mBackgroundImageView = findViewById(R.id.song_bg_imageView);
+        Intent intent = getIntent();
+        mBackgroundURL = intent.getStringExtra("bg_image");
+        filename = intent.getStringExtra("filename");
+        fileURL = intent.getStringExtra("fileURL");
+        songURL = intent.getStringExtra("songURL");
+        serviceIntent = new Intent(getApplicationContext(),MyService.class);
+        serviceIntent.putExtra("songURL",songURL);
+        Log.d("filename SongActivity",filename);
+        Log.d("fileURL SongActivity",fileURL);
+        Log.d("songURL SongActivity",songURL);
+//        Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
+
+        Picasso.get().load(mBackgroundURL).into(mBackgroundImageView);
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT<Build.VERSION_CODES.R){
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 access = true;
             } else{
