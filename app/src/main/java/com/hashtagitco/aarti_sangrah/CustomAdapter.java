@@ -4,6 +4,7 @@ package com.hashtagitco.aarti_sangrah;
 import android.content.Context;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hashtagitco.aarti_sangrah.R;
 import com.squareup.picasso.Picasso;
 
@@ -149,8 +154,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 //        viewHolder.getHindiTextView().setText(mHindiNames.get(position));
         viewHolder.getEnglishTextView().setText(mEnglishNames.get(position));
 
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(false)
+                .centerCrop()
+                .dontAnimate()
+                .dontTransform()
+                .placeholder(R.drawable.loading_thumbnail)
+                .priority(Priority.IMMEDIATE)
+                .encodeFormat(Bitmap.CompressFormat.PNG)
+                .format(DecodeFormat.DEFAULT);
+
+        Glide.with(mContext)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(mImageUrls.get(position))
+                        .error(Glide.with(mContext)
+                                .load(R.drawable.loading_thumbnail))
+                .into(viewHolder.getImageView());
+
 //        Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());
-        Picasso.get().load(mImageUrls.get(position)).into(viewHolder.getImageView());
+//        Picasso.get().load(mImageUrls.get(position)).into(viewHolder.getImageView());
         viewHolder.getEnglishTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

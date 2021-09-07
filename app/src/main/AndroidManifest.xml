@@ -9,6 +9,7 @@
 
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@drawable/aarti_logo_app_icon"
         android:requestLegacyExternalStorage="true"
@@ -18,7 +19,7 @@
         android:theme="@style/Theme.AppCompat.DayNight">
 
 
-        <activity android:name="com.hashtagitco.aarti_sangrah.LyricsActivity"></activity>
+        <activity android:name="com.hashtagitco.aarti_sangrah.LyricsActivity" />
         <activity android:name="com.hashtagitco.aarti_sangrah.SongActivity" />
         <activity
             android:name="com.hashtagitco.aarti_sangrah.MainActivity"

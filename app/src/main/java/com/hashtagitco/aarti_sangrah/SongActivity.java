@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -90,7 +95,7 @@ public class SongActivity extends AppCompatActivity {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 }
             }
-        },1000);
+        },2000);
 
 
         playBtn = findViewById(R.id.song_play_btn);
@@ -110,8 +115,24 @@ public class SongActivity extends AppCompatActivity {
         Log.d("songURL SongActivity",songURL);
 //        Glide.with(getApplicationContext()).load(mBackgroundURL).into(mBackgroundImageView);
 
-        Picasso.get().load(mBackgroundURL).into(mBackgroundImageView);
+//        Picasso.get().load(mBackgroundURL).into(mBackgroundImageView);
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .skipMemoryCache(false)
+                .centerCrop()
+                .dontAnimate()
+                .dontTransform()
+                .placeholder(R.drawable.bg_aarti_app_loading)
+                .priority(Priority.IMMEDIATE)
+                .encodeFormat(Bitmap.CompressFormat.PNG)
+                .format(DecodeFormat.DEFAULT);
 
+        Glide.with(getApplicationContext())
+                .applyDefaultRequestOptions(requestOptions)
+                .load(mBackgroundURL)
+                .error(Glide.with(getApplicationContext())
+                        .load(R.drawable.bg_aarti_app_loading))
+                .into(mBackgroundImageView);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT<Build.VERSION_CODES.R){
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {

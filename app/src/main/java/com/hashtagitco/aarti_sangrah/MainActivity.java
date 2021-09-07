@@ -48,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Splashy(this)
+                .setLogo(R.drawable.aarti_logo)
+                .setTitle("Aarti Sangrah")
+                .setTitleColor("#FFFFFF")
+                .setSubTitle("सर्वेषां मङ्गलम् भवतु।")
+                .setSubTitleColor("#FFFFFF")
+                .setProgressColor(R.color.white)
+                .setBackgroundResource(R.drawable.mohanjodado)
+                .setFullScreen(true)
+                .show();
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
                     @Override
                     public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -58,38 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
 
-//        AdRequest adRequest = new AdRequest.Builder().build();
-
-
-//        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
-//                new InterstitialAdLoadCallback() {
-//                    @Override
-//                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-//                        // The mInterstitialAd reference will be null until
-//                        // an ad is loaded.
-//                        mInterstitialAd = interstitialAd;
-//                        Log.i("TAG", "onAdLoaded");
-//                    }
-//
-//                    @Override
-//                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-//                        // Handle the error
-//                        Log.i("TAG", loadAdError.getMessage());
-//                        mInterstitialAd = null;
-//                    }
-//                });
-//
-//        new Handler().postDelayed(new Runnable(){
-//            @Override
-//            public void run(){
-//                if (mInterstitialAd != null) {
-//                    mInterstitialAd.show(MainActivity.this);
-//
-//                } else {
-//                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
-//                }
-//            }
-//        },4000);
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("aarti");
@@ -121,17 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         mCardView = findViewById(R.id.displayCard);
         mCardView.setBackgroundResource(R.drawable.recycler_view_bg);
-
-         new Splashy(this)  // For JAVA : new Splashy(this)
-                 .setLogo(R.drawable.aarti_logo)
-                 .setTitle("Aarti Sangrah")
-                 .setTitleColor("#FFFFFF")
-                 .setSubTitle("सर्वेषां मङ्गलम् भवतु।")
-                 .setSubTitleColor("#FFFFFF")
-                 .setProgressColor(R.color.white)
-                 .setBackgroundResource(R.drawable.mohanjodado)
-                 .setFullScreen(true)
-                 .show();
 
 
     }
