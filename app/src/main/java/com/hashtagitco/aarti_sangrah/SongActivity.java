@@ -1,6 +1,7 @@
 package com.hashtagitco.aarti_sangrah;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,12 +21,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -56,6 +63,7 @@ public class SongActivity extends AppCompatActivity {
     private Boolean access = false;
     int requestCode = 1;
     String path;
+    ProgressBar mProgressBar;
 
 
 
@@ -103,6 +111,7 @@ public class SongActivity extends AppCompatActivity {
 
         isPlaying = false;
         mBackgroundImageView = findViewById(R.id.song_bg_imageView);
+        mProgressBar = findViewById(R.id.song_progressbar);
         Intent intent = getIntent();
         mBackgroundURL = intent.getStringExtra("bg_image");
         filename = intent.getStringExtra("filename");
@@ -121,8 +130,8 @@ public class SongActivity extends AppCompatActivity {
                 .skipMemoryCache(false)
                 .centerCrop()
                 .dontAnimate()
+                .placeholder(R.drawable.bg_aarti_app)
                 .dontTransform()
-                .placeholder(R.drawable.bg_aarti_app_loading)
                 .priority(Priority.IMMEDIATE)
                 .encodeFormat(Bitmap.CompressFormat.PNG)
                 .format(DecodeFormat.DEFAULT);
@@ -130,8 +139,21 @@ public class SongActivity extends AppCompatActivity {
         Glide.with(getApplicationContext())
                 .applyDefaultRequestOptions(requestOptions)
                 .load(mBackgroundURL)
-                .error(Glide.with(getApplicationContext())
-                        .load(R.drawable.bg_aarti_app_loading))
+                    .error(Glide.with(getApplicationContext()).load(R.drawable.bg_aarti_app).into(mBackgroundImageView))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                        mProgressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mBackgroundImageView.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(mBackgroundImageView);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT<Build.VERSION_CODES.R){

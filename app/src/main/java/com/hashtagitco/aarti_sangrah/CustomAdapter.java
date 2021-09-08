@@ -5,6 +5,7 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +13,23 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.hashtagitco.aarti_sangrah.R;
 import com.squareup.picasso.Picasso;
 
@@ -97,6 +105,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mEnglishName;
         ImageView mThumbnail;
+        ProgressBar mProgressBar;
 
         //        private final Button button;
         public ViewHolder(View view) {
@@ -105,15 +114,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             mEnglishName = view.findViewById(R.id.english_name);
             mEnglishName.setMovementMethod(new ScrollingMovementMethod());
             mThumbnail = view.findViewById(R.id.aarti_image_view);
-            // Define click listener for the ViewHolder's View
-//            view.setOnClickListener(new View.OnClickListener() {
-//                public Context mContext;
-//
-//                @Override
-//                public void onClick(View v) {
-//                    mContext.startActivity(new Intent(mContext,SongActivity.class));
-//                }
-//            });
+            mProgressBar = view.findViewById(R.id.thumbnail_progressbar);
 
         }
 
@@ -126,7 +127,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ImageView getImageView() {
             return mThumbnail;
         }
-
+        public ProgressBar getmProgressBar() { return mProgressBar; }
     }
 
 
@@ -154,13 +155,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 //        viewHolder.getHindiTextView().setText(mHindiNames.get(position));
         viewHolder.getEnglishTextView().setText(mEnglishNames.get(position));
 
+
+
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(false)
                 .centerCrop()
                 .dontAnimate()
                 .dontTransform()
-                .placeholder(R.drawable.loading_thumbnail)
                 .priority(Priority.IMMEDIATE)
                 .encodeFormat(Bitmap.CompressFormat.PNG)
                 .format(DecodeFormat.DEFAULT);
@@ -168,8 +170,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         Glide.with(mContext)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(mImageUrls.get(position))
-                        .error(Glide.with(mContext)
-                                .load(R.drawable.loading_thumbnail))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        viewHolder.getImageView().setVisibility(View.VISIBLE);
+                        viewHolder.getmProgressBar().setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(viewHolder.getImageView());
 
 //        Glide.with(mContext).load(mImageUrls.get(position)).into(viewHolder.getImageView());

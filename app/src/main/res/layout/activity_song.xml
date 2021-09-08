@@ -17,6 +17,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_aarti_app" />
 
+    <ProgressBar
+        android:id="@+id/song_progressbar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/guideline14"
+        app:layout_constraintVertical_bias="0.45" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/song_bg_imageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scaleType="fitXY"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:visibility="invisible"/>-->
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/song_lyrics_btn"
         android:layout_width="70dp"
